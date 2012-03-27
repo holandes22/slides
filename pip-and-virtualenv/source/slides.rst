@@ -8,16 +8,14 @@ virtualenv intro
 ----------------
 
 * **What is it?** A tool developed by Ian Bicking to create Python isolated environments
-* **Why?** Think about two web applications living on the same server which share some dependencies (django for instance).
+* **Why?** Think about two web applications living on the same server sharing dependencies (django for example).
   What if you want to update the dependencies of app1, but you don't want to break anything in app2.
-  This is where virtualenv comes to the rescue.
 
 virtualenv intro cont.
 ----------------------
 
 virtualenv creates an environment that has its own installation directories and isolates itself from other virtual
-environments. The environment contains a site-packages directory, installs setuptools (pip and virtualenv) and a Python 
-interpreter that is aware of its environment.
+environments.
 
 This allows us to install a different set of dependencies (with regular user permissions) for each of application in the system.
 
@@ -40,12 +38,12 @@ To activate the virtualenv::
 
     $source venv/bin/activate
 
-Now, runnig the command which on python::
+Now, runnig the command **which** for python::
 
     $which python
     virtualenvs/venv/bin/python
 
-I now points to the interpreter from venv, instead of the system wide one.
+Points to the interpreter from venv, instead of the system wide one.
 
 virtualenv and site-packages
 ----------------------------
@@ -64,15 +62,81 @@ vitualenv outro
 ---------------
 
 **That is it, all you basically need to know to use virtualenv.**
+
 For more advance features, such as creating boostraping scripts that can be run after each install, visit virtualenv.org
+
 You can also check virtualenvwrapper, a set of tools that provide some nice wrappers and hooks for virtualenv. Can be
 found at PyPI.
 
-virtualenv future
+pip - pip installs Python packages
+----------------------------------
+
+pip is another tool by Ian Bicking. Is a python package installer that comes to replace easy_install
+providing improvements suchs requirement files and support for VCS.
+
+pip is included in virtualenv.
+
+pip - installing packages
+-------------------------
+
+Installing packages::
+
+    pip install django
+
+will install the latest django version available along with all it's dependencies
+
+pip editables allows to install a package by adding it to sys.path, instead of copying the files. This is convenient when you depend on a project that
+you are developing in parallel and it's bound to change a lot::
+
+    pip install -e /my/cool/project
+
+    
+requirement files
 -----------------
 
-todo: sacar de pycon sunday morning lightning talks, frank meyer (~minuto 13)
+A pip requirement file::
+
+    Django>=1.3.1
+    cherrypy
+    celery
+    django-celery==1.0
+    django-kombu
+    -e git+https://github.com/user/project.git#egg=project
 
 
-pip
----
+consistent recreation of enviroments
+------------------------------------
+
+Is highly recommended to pin everything to a version. Not pretty to have a dependency of a dependency changing not
+knowing what went wrong.
+
+pip freeze if useful to do this::
+
+    $ pip freeze
+    CherryPy==3.2.2
+    Django==1.3.1
+    amqplib==1.0.2
+    celery==2.5.1
+    django-celery==2.5.1
+    django-kombu==0.9.4
+    django-nose==0.1.3
+    kombu==2.1.1
+
+Ideally, the CI server should run the tests regularly by making a clean install of the deps.
+
+some tips
+---------
+
+You will probably end up installing the same packages over an over for each project.
+for this, pip can cache the downloaded packages. In ~/pip/.pip.conf  put::
+
+    [global]
+    download-cache=/path/to/some/folder
+
+What if PyPI is down?::
+
+    [global]
+    use-mirrors=true
+
+
+
