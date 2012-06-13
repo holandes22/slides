@@ -25,6 +25,8 @@ virtualenv installation and usage
 
 virtualenv is in PyPI, so you can install it using pip (or easy_install if you leave in the stone age)
 
+**As of python 3.3, virtualenv is included in the python standard library: PEP 405**
+
 To create a virtualenv, simply run::
 
     $virtualenv venv
@@ -74,7 +76,15 @@ pip - pip installs Python packages
 pip is another tool by Ian Bicking. Is a python package installer that comes to replace easy_install
 providing improvements suchs requirement files and support for VCS.
 
-pip is included in virtualenv.
+pip is included in every virtualenv. 
+
+pip - Why is better than easy_install
+-------------------------------------
+
+* All packages are downloaded before installation. Partially-completed installation doesn’t occur as a result.
+* pip uninstall!!!
+* Actively developed (easy_install has been dead for quite a while now)
+* Care is taken to present useful output on the console and error messages are useful
 
 pip - installing packages
 -------------------------
@@ -107,8 +117,8 @@ A pip requirement file::
 consistent recreation of enviroments
 ------------------------------------
 
-Is highly recommended to pin everything to a version. Not pretty to have a dependency of a dependency changing not
-knowing what went wrong.
+Is highly recommended to pin everything to a version. Not pretty to have a dependency of a dependency changing and 
+not knowing what went wrong.
 
 pip freeze if useful to do this::
 
@@ -121,8 +131,6 @@ pip freeze if useful to do this::
     django-kombu==0.9.4
     django-nose==0.1.3
     kombu==2.1.1
-
-Ideally, the CI server should run the tests regularly by making a clean install of the deps.
 
 some tips
 ---------
@@ -139,4 +147,8 @@ What if PyPI is down?::
     use-mirrors=true
 
 
+The end
+-------
 
+To sum up, if you develope in python, use virtualenv and pip, it's going to make your life
+much easier.
